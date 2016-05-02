@@ -1,6 +1,6 @@
 <?php
 /**
- * totp.php
+ * TOTP.php
  *
  * @license   http://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  * @copyright 2016 George D. Cooksey, III
