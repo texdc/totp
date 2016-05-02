@@ -12,11 +12,10 @@
         "satooshi/php-coveralls": "~1.0",
         "squizlabs/php_codesniffer": "~2.5",
         "phpmd/phpmd": "~2.0",
-        "halleck45/phpmetrics": "*"
+        "phpmetrics/phpmetrics": "*"
     },
     "autoload": {
-        "psr-4": { "texdc\\totp\\": "src/" },
-        "files": [ "src/totp.php" ]
+        "psr-4": { "texdc\\totp\\": "src/" }
     },
     "autoload-dev": {
         "psr-4": { "texdc\\totp\\test\\": "test/" }

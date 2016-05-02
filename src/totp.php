@@ -3,10 +3,12 @@
  * totp.php
  *
  * @license   http://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
+ * @copyright 2016 George D. Cooksey, III
  * @copyright 2014 Robin Leffmann <djinn at stolendata dot net>
  *            https://github.com/stolendata/totp/
- * @version   v0.2.0
  */
+
+namespace texdc\totp;
 
 /**
  * a simple TOTP (RFC 6238) class using the SHA1 default
@@ -15,8 +17,15 @@
  */
 class TOTP
 {
+    /**
+     * @var string
+     */
     private static $base32Map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
+    /**
+     * @param  string $in
+     * @return string
+     */
     private static function base32Decode($in)
     {
         $l = strlen($in);
@@ -32,17 +41,24 @@ class TOTP
         return $out;
     }
 
+    /**
+     * @param  string $secret
+     * @param  int    $digits
+     * @param  int    $period
+     * @param  int    $offset
+     * @return array
+     */
     public static function getOTP($secret, $digits = 6, $period = 30, $offset = null)
     {
-        if (strlen($secret) < 16 || strlen($secret) % 8 != 0) return [
-            'err' => 'length of secret must be a multiple of 8, and at least 16 characters'
-        ];
-        if (preg_match('/[^a-z2-7]/i', $secret) === 1) return [
-            'err' => 'secret contains non-base32 characters'
-        ];
-        if ($digits < 6 || $digits > 8) return [
-            'err' => 'digits must be 6, 7 or 8'
-        ];
+        if (strlen($secret) < 16 || strlen($secret) % 8 != 0) {
+            return ['err' => 'length of secret must be a multiple of 8, and at least 16 characters'];
+        }
+        if (preg_match('/[^a-z2-7]/i', $secret) === 1) {
+            return ['err' => 'secret contains non-base32 characters'];
+        }
+        if ($digits < 6 || $digits > 8) {
+            return ['err' => 'digits must be 6, 7 or 8'];
+        }
 
         $seed = self::base32Decode($secret);
         $time = str_pad(pack('N', intval(time() / $period) + $offset), 8, "\x00", STR_PAD_LEFT);
@@ -52,30 +68,43 @@ class TOTP
         return ['otp' => sprintf("%'0{$digits}u", $otp)];
     }
 
+    /**
+     * @param  int $length
+     * @return array
+     */
     public static function genSecret($length = 24)
     {
-        if ($length < 16 || $length % 8 != 0) return [
-            'err' => 'length must be a multiple of 8, and at least 16'
-        ];
+        if ($length < 16 || $length % 8 != 0) {
+            return ['err' => 'length must be a multiple of 8, and at least 16'];
+        }
 
         while ($length--) {
             $c = @gettimeofday()['usec'] % 53;
-            while ($c--)
+            while ($c--) {
                 mt_rand();
+            }
             @$secret .= self::$base32Map[mt_rand(0, 31)];
         }
 
         return ['secret' => $secret];
     }
 
+    /**
+     * @param  string $account
+     * @param  string $secret
+     * @param  int    $digits
+     * @param  int    $period
+     * @param  string $issuer
+     * @return array
+     */
     public static function genURI($account, $secret, $digits = null, $period = null, $issuer = null)
     {
-        if (empty($account) || empty($secret)) return [
-            'err' => 'you must provide at least an account and a secret'
-        ];
-        if (mb_strpos($account . $issuer, ':') !== false) return [
-            'err' => 'neither account nor issuer can contain a colon character'
-        ];
+        if (empty($account) || empty($secret)) {
+            return ['err' => 'you must provide at least an account and a secret'];
+        }
+        if (mb_strpos($account . $issuer, ':') !== false) {
+            return ['err' => 'neither account nor issuer can contain a colon character'];
+        }
 
         $account = rawurlencode($account);
         $issuer = rawurlencode($issuer);
