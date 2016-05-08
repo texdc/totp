@@ -42,7 +42,7 @@ class TOTP
         Assertion::digit($period);
         Assertion::nullOrDigit($offset);
 
-        $seed = static::base32Decode($secret);
+        $seed = $this->base32Decode($secret);
         $time = str_pad(pack('N', intval(time() / $period) + $offset), 8, "\x00", STR_PAD_LEFT);
         $hash = hash_hmac('sha1', $time, $seed, false);
         $otp  = (hexdec(substr($hash, hexdec($hash[39]) * 2, 8)) & 0x7fffffff) % pow(10, $digits);
@@ -104,14 +104,14 @@ class TOTP
      */
     private function base32Decode($input)
     {
-        $l = strlen($input);
-        $n = $bs = 0;
+        $len = strlen($input);
+        $num = $base = 0;
 
-        for ($i = 0; $i < $l; $i++) {
-            $n <<= 5;
-            $n += stripos(static::$base32Map, $input[$i]);
-            $bs = ($bs + 5) % 8;
-            @$out .= $bs < 5 ? chr(($n & (255 << $bs)) >> $bs) : null;
+        for ($i = 0; $i < $len; $i++) {
+            $num <<= 5;
+            $num  += stripos(static::$base32Map, $input[$i]);
+            $base  = ($base + 5) % 8;
+            @$out .= $base < 5 ? chr(($num & (255 << $base)) >> $base) : null;
         }
 
         return $out;
