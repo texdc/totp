@@ -13,71 +13,78 @@ use texdc\totp\TOTP;
 
 class TotpTest extends TestCase
 {
+    private $totp;
+
+    protected function setUp()
+    {
+        $this->totp = new TOTP();
+    }
+
     public function testGetOtpChecksSecretLength()
     {
-        $result = TOTP::getOTP('foo');
+        $result = $this->totp->getOTP('foo');
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGetOtpChecksSecretCharacters()
     {
-        $result = TOTP::getOTP(str_repeat('^', 16));
+        $result = $this->totp->getOTP(str_repeat('^', 16));
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGetOtpChecksDigits()
     {
-        $result = TOTP::getOTP(str_repeat('a5', 16), 1);
+        $result = $this->totp->getOTP(str_repeat('a5', 16), 1);
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGetOtpGeneratesOtp()
     {
-        $result = TOTP::getOTP(str_repeat('a5', 16));
+        $result = $this->totp->getOTP(str_repeat('a5', 16));
         $this->assertArrayHasKey('otp', $result);
         $this->assertEquals(6, strlen($result['otp']));
     }
 
     public function testGenSecretChecksLength()
     {
-        $result = TOTP::genSecret(5);
+        $result = $this->totp->genSecret(5);
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenSecretGeneratesSecret()
     {
-        $result = TOTP::genSecret();
+        $result = $this->totp->genSecret();
         $this->assertArrayHasKey('secret', $result);
         $this->assertEquals(24, strlen($result['secret']));
     }
 
     public function testGenUriChecksEmptyAccount()
     {
-        $result = TOTP::genURI('', 'foo');
+        $result = $this->totp->genURI('', 'foo');
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenUriChecksEmptySecret()
     {
-        $result = TOTP::genURI('foo', '');
+        $result = $this->totp->genURI('foo', '');
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenUriChecksAccontForColon()
     {
-        $result = TOTP::genURI('foo:', 'bar');
+        $result = $this->totp->genURI('foo:', 'bar');
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenUriChecksIssuerForColon()
     {
-        $result = TOTP::genURI('foo', 'bar', null, null, ':');
+        $result = $this->totp->genURI('foo', 'bar', null, null, ':');
         $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenUriGeneratesUri()
     {
-        $result = TOTP::genURI('foo', 'bar');
+        $result = $this->totp->genURI('foo', 'bar');
         $this->assertArrayHasKey('uri', $result);
         $this->assertContains('otpauth://totp/', $result['uri']);
     }

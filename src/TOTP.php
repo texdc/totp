@@ -23,32 +23,13 @@ class TOTP
     private static $base32Map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
     /**
-     * @param  string $in
-     * @return string
-     */
-    private static function base32Decode($in)
-    {
-        $l = strlen($in);
-        $n = $bs = 0;
-
-        for ($i = 0; $i < $l; $i++) {
-            $n <<= 5;
-            $n += stripos(self::$base32Map, $in[$i]);
-            $bs = ($bs + 5) % 8;
-            @$out .= $bs < 5 ? chr(($n & (255 << $bs)) >> $bs) : null;
-        }
-
-        return $out;
-    }
-
-    /**
      * @param  string $secret
      * @param  int    $digits
      * @param  int    $period
      * @param  int    $offset
      * @return array
      */
-    public static function getOTP($secret, $digits = 6, $period = 30, $offset = null)
+    public function getOTP($secret, $digits = 6, $period = 30, $offset = null)
     {
         if (strlen($secret) < 16 || strlen($secret) % 8 != 0) {
             return ['err' => 'length of secret must be a multiple of 8, and at least 16 characters'];
@@ -72,7 +53,7 @@ class TOTP
      * @param  int $length
      * @return array
      */
-    public static function genSecret($length = 24)
+    public function genSecret($length = 24)
     {
         if ($length < 16 || $length % 8 != 0) {
             return ['err' => 'length must be a multiple of 8, and at least 16'];
@@ -97,7 +78,7 @@ class TOTP
      * @param  string $issuer
      * @return array
      */
-    public static function genURI($account, $secret, $digits = null, $period = null, $issuer = null)
+    public function genURI($account, $secret, $digits = null, $period = null, $issuer = null)
     {
         if (empty($account) || empty($secret)) {
             return ['err' => 'you must provide at least an account and a secret'];
@@ -116,5 +97,24 @@ class TOTP
                  (is_null($period) ? '' : "&period=$period") .
                  (empty($issuer) ? '' : "&issuer=$issuer")
         ];
+    }
+
+    /**
+     * @param  string $in
+     * @return string
+     */
+    private function base32Decode($in)
+    {
+        $l = strlen($in);
+        $n = $bs = 0;
+
+        for ($i = 0; $i < $l; $i++) {
+            $n <<= 5;
+            $n += stripos(self::$base32Map, $in[$i]);
+            $bs = ($bs + 5) % 8;
+            @$out .= $bs < 5 ? chr(($n & (255 << $bs)) >> $bs) : null;
+        }
+
+        return $out;
     }
 }
