@@ -22,70 +22,92 @@ class TotpTest extends TestCase
 
     public function testGetOtpChecksSecretLength()
     {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('length of secret must be at least 16 characters');
         $result = $this->totp->getOTP('foo');
-        $this->assertArrayHasKey('err', $result);
+    }
+
+    public function testGetOtpChecksSecretModulus()
+    {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('length of secret must be a multiple of 8');
+        $result = $this->totp->getOTP(str_repeat('foo', 6));
     }
 
     public function testGetOtpChecksSecretCharacters()
     {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('secret contains non-base32 characters');
         $result = $this->totp->getOTP(str_repeat('^', 16));
-        $this->assertArrayHasKey('err', $result);
     }
 
     public function testGetOtpChecksDigits()
     {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('digits must be 6, 7, or 8');
         $result = $this->totp->getOTP(str_repeat('a5', 16), 1);
-        $this->assertArrayHasKey('err', $result);
     }
 
     public function testGetOtpGeneratesOtp()
     {
         $result = $this->totp->getOTP(str_repeat('a5', 16));
-        $this->assertArrayHasKey('otp', $result);
-        $this->assertEquals(6, strlen($result['otp']));
+        $this->assertInternalType('string', $result);
+        $this->assertEquals(6, strlen($result));
     }
 
     public function testGenSecretChecksLength()
     {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('length must be at least 16 characters');
         $result = $this->totp->genSecret(5);
-        $this->assertArrayHasKey('err', $result);
+    }
+
+    public function testGenSecretChecksModulus()
+    {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('length must be a multiple of 8');
+        $result = $this->totp->genSecret(19);
     }
 
     public function testGenSecretGeneratesSecret()
     {
         $result = $this->totp->genSecret();
-        $this->assertArrayHasKey('secret', $result);
-        $this->assertEquals(24, strlen($result['secret']));
+        $this->assertInternalType('string', $result);
+        $this->assertEquals(24, strlen($result));
     }
 
     public function testGenUriChecksEmptyAccount()
     {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('account is required');
         $result = $this->totp->genURI('', 'foo');
-        $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenUriChecksEmptySecret()
     {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('secret is required');
         $result = $this->totp->genURI('foo', '');
-        $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenUriChecksAccontForColon()
     {
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('account must not contain a colon character');
         $result = $this->totp->genURI('foo:', 'bar');
-        $this->assertArrayHasKey('err', $result);
     }
 
     public function testGenUriChecksIssuerForColon()
     {
-        $result = $this->totp->genURI('foo', 'bar', null, null, ':');
-        $this->assertArrayHasKey('err', $result);
+        $this->expectException('Assert\AssertionFailedException');
+        $this->expectExceptionMessage('issuer must not contain a colon character');
+        $result = $this->totp->genURI('foo', 'bar', null, null, ':test');
     }
 
     public function testGenUriGeneratesUri()
     {
         $result = $this->totp->genURI('foo', 'bar');
-        $this->assertArrayHasKey('uri', $result);
-        $this->assertContains('otpauth://totp/', $result['uri']);
+        $this->assertInternalType('string', $result);
+        $this->assertContains('otpauth://totp/', $result);
     }
 }

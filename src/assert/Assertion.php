@@ -17,7 +17,7 @@ use Assert\Assertion as BaseAssertion;
  * @method static void notModulus($value, $modulo, $message = null, $propertyPath = null)
  * @method static void integerRange($value, $min, $max, $message = null, $propertyPath = null)
  * @method static void notIntegerRange($value, $min, $max, $message = null, $propertyPath = null)
- * @method static void notContaints($value, $needle, $message = null, $propertyPath = null)
+ * @method static void notContains($value, $needle, $message = null, $propertyPath = null)
  */
 class Assertion extends BaseAssertion
 {
