@@ -16,7 +16,8 @@
         "phpmetrics/phpmetrics": "*"
     },
     "autoload": {
-        "psr-4": { "texdc\\totp\\": "src/" }
+        "psr-4": { "texdc\\totp\\": "src/" },
+        "files": [ "src/assert/functions.php" ]
     },
     "autoload-dev": {
         "psr-4": { "texdc\\totp\\test\\": "test/" }
