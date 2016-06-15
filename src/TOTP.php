@@ -39,13 +39,15 @@ class TOTP
             ->regex('/^[a-z2-7]+$/i', 'secret contains non-base32 characters');
         guard(strlen($secret))->isModulus(8, 'length of secret must be a multiple of 8');
         guard($digits)->numericRange(6, 8, 'digits must be 6, 7, or 8');
-        guard($period)->digit();
-        guard($offset)->nullOr()->digit();
+        guard($period)->integer();
+        guard($offset)->nullOr()->integer();
 
-        $seed = $this->base32Decode($secret);
-        $time = str_pad(pack('N', intval(time() / $period) + $offset), 8, "\x00", STR_PAD_LEFT);
-        $hash = hash_hmac('sha1', $time, $seed, false);
-        $otp  = (hexdec(substr($hash, hexdec($hash[39]) * 2, 8)) & 0x7fffffff) % pow(10, $digits);
+        $seed  = $this->base32Decode($secret);
+        $time  = $this->getTimestamp($period, $offset);
+        $hash  = hash_hmac('sha1', $time, $seed, true);
+        $bytes = substr($hash, ord(substr($hash, -1)) & 0x0F, 4);
+        $value = unpack('N', $bytes);
+        $otp   = ($value[1] & 0x7FFFFFFF) % pow(10, $digits);
 
         return sprintf("%'0{$digits}u", $otp);
     }
@@ -115,5 +117,10 @@ class TOTP
         }
 
         return $out;
+    }
+
+    private function getTimestamp($period, $offset)
+    {
+        return "\0\0\0\0" . pack('N*', (int)floor(time() / $period) + ($offset * $period));
     }
 }
