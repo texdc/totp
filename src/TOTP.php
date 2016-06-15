@@ -119,6 +119,13 @@ class TOTP
         return $out;
     }
 
+    /**
+     * Generate a timestamp as a binary string
+     *
+     * @param  int $period
+     * @param  int $offset
+     * @return string
+     */
     private function getTimestamp($period, $offset)
     {
         return "\0\0\0\0" . pack('N*', (int)floor(time() / $period) + ($offset * $period));
