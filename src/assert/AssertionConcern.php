@@ -20,6 +20,13 @@ class AssertionConcern extends AssertionChain
     private $defaultPropertyPath;
 
     /**
+     * Return each assertion as always valid.
+     *
+     * @var bool
+     */
+    private $alwaysValid = false;
+
+    /**
      * Perform assertion on every element of array or traversable.
      *
      * @var bool
@@ -56,6 +63,10 @@ class AssertionConcern extends AssertionChain
      */
     public function __call($methodName, $args)
     {
+        if ($this->alwaysValid === true) {
+            return $this;
+        }
+
         if (!$this->reflClass->hasMethod($methodName)) {
             throw new \RuntimeException("Assertion '" . $methodName . "' does not exist.");
         }
@@ -67,6 +78,32 @@ class AssertionConcern extends AssertionChain
         }
 
         call_user_func_array([static::$assertionClass, $methodName], $args);
+
+        return $this;
+    }
+
+    /**
+     * Switch chain into validation mode for an array of values.
+     *
+     * @return AssertionConcern
+     */
+    public function all()
+    {
+        $this->all = true;
+
+        return $this;
+    }
+
+    /**
+     * Switch chain into mode allowing nulls, ignoring further assertions.
+     *
+     * @return \Assert\AssertionChain
+     */
+    public function nullOr()
+    {
+        if ($this->value === null) {
+            $this->alwaysValid = true;
+        }
 
         return $this;
     }

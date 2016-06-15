@@ -22,4 +22,26 @@ class AssertionConcernTest extends TestCase
     {
         guard(16)->isModulus(8)->numericRange(8, 32);
     }
+
+    public function testUniqueInstances()
+    {
+        $this->assertTrue(guard('foo') !== guard(15));
+    }
+
+    public function testCallValidatesMethod()
+    {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage("Assertion 'foo' does not exist.");
+        guard(5)->foo();
+    }
+
+    public function testAllUpdatesMethod()
+    {
+        guard([7,9])->all()->integer();
+    }
+
+    public function testNullOrIsValid()
+    {
+        guard(null)->nullOr()->alnum();
+    }
 }

@@ -10,7 +10,7 @@
 
 namespace texdc\totp;
 
-use texdc\totp\assert\Assertion;
+use function texdc\totp\assert\guard;
 
 /**
  * a simple TOTP (RFC 6238) class using the SHA1 default
@@ -35,12 +35,12 @@ class TOTP
      */
     public function getOTP($secret, $digits = 6, $period = 30, $offset = null)
     {
-        Assertion::minLength($secret, 16, 'length of secret must be at least 16 characters');
-        Assertion::isModulus(strlen($secret), 8, 'length of secret must be a multiple of 8');
-        Assertion::regex($secret, '/^[a-z2-7]+$/i', 'secret contains non-base32 characters');
-        Assertion::numericRange($digits, 6, 8, 'digits must be 6, 7, or 8');
-        Assertion::digit($period);
-        Assertion::nullOrDigit($offset);
+        guard($secret)->minLength(16, 'length of secret must be at least 16 characters')
+            ->regex('/^[a-z2-7]+$/i', 'secret contains non-base32 characters');
+        guard(strlen($secret))->isModulus(8, 'length of secret must be a multiple of 8');
+        guard($digits)->numericRange(6, 8, 'digits must be 6, 7, or 8');
+        guard($period)->digit();
+        guard($offset)->nullOr()->digit();
 
         $seed = $this->base32Decode($secret);
         $time = str_pad(pack('N', intval(time() / $period) + $offset), 8, "\x00", STR_PAD_LEFT);
@@ -57,8 +57,8 @@ class TOTP
      */
     public function genSecret($length = 24)
     {
-        Assertion::min($length, 16, 'length must be at least 16 characters');
-        Assertion::isModulus($length, 8, 'length must be a multiple of 8');
+        guard($length)->min(16, 'length must be at least 16 characters')
+            ->isModulus(8, 'length must be a multiple of 8');
 
         while ($length--) {
             $c = @gettimeofday()['usec'] % 53;
@@ -81,12 +81,12 @@ class TOTP
      */
     public function genURI($account, $secret, $digits = null, $period = null, $issuer = '')
     {
-        Assertion::notBlank($account, 'account is required');
-        Assertion::notContains($account, ':', 'account must not contain a colon character');
-        Assertion::notBlank($secret, 'secret is required');
-        Assertion::nullOrDigit($digits);
-        Assertion::nullOrDigit($period);
-        Assertion::notContains($issuer, ':', 'issuer must not contain a colon character');
+        guard($account)->notBlank('account is required')
+            ->notContains(':', 'account must not contain a colon character');
+        guard($secret)->notBlank('secret is required');
+        guard($digits)->nullOr()->digit();
+        guard($period)->nullOr()->digit();
+        guard($issuer)->notContains(':', 'issuer must not contain a colon character');
 
         $account = rawurlencode($account);
         $issuer  = rawurlencode($issuer);
