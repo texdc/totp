@@ -11,11 +11,10 @@ matrix:
     - php: hhvm
   
 before_script:
-  - composer self-update
-  - composer install --dev --prefer-source
+  - composer install --prefer-dist
+  - mkdir -p build/logs
   
 script:
-  - mkdir -p build/logs
   - vendor/bin/phpunit
   - vendor/bin/phpcs --standard=PSR2 src/ test/
   
