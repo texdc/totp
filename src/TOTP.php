@@ -33,7 +33,7 @@ class TOTP
      * @return string
      * @throws \Assert\AssertionFailedException
      */
-    public function getOTP($secret, $digits = 6, $period = 30, $offset = null)
+    public function getOTP(string $secret, int $digits = 6, int $period = 30, int $offset = 0) : string
     {
         guard($secret)->minLength(16, 'length of secret must be at least 16 characters')
             ->regex('/^[a-z2-7]+$/i', 'secret contains non-base32 characters');
@@ -57,7 +57,7 @@ class TOTP
      * @return string
      * @throws \Assert\AssertionFailedException
      */
-    public function genSecret($length = 24)
+    public function genSecret(int $length = 24) : string
     {
         guard($length)->min(16, 'length must be at least 16 characters')
             ->isModulus(8, 'length must be a multiple of 8');
@@ -81,8 +81,13 @@ class TOTP
      * @param  string $issuer
      * @return string
      */
-    public function genURI($account, $secret, $digits = null, $period = null, $issuer = '')
-    {
+    public function genURI(
+        string $account,
+        string $secret,
+        int $digits = null,
+        int $period = null,
+        string $issuer = ''
+    ) : string {
         guard($account)->notBlank('account is required')
             ->notContains(':', 'account must not contain a colon character');
         guard($secret)->notBlank('secret is required');
@@ -104,7 +109,7 @@ class TOTP
      * @param  string $input
      * @return string
      */
-    private function base32Decode($input)
+    private function base32Decode(string $input) : string
     {
         $len = strlen($input);
         $num = $base = 0;
@@ -126,7 +131,7 @@ class TOTP
      * @param  int $offset
      * @return string
      */
-    private function getTimestamp($period, $offset)
+    private function getTimestamp(int $period, int $offset = 0) : string
     {
         return "\0\0\0\0" . pack('N*', (int)floor(time() / $period) + ($offset * $period));
     }

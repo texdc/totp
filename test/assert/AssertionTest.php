@@ -8,7 +8,7 @@
 
 namespace texdc\totp\test\assert;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use texdc\totp\assert\Assertion;
 
 class AssertionTest extends TestCase
@@ -21,8 +21,8 @@ class AssertionTest extends TestCase
 
     public function testValidModulus()
     {
-        Assertion::isModulus(24, 8);
-        Assertion::isModulus(9, 3);
+        $this->assertNull(Assertion::isModulus(24, 8));
+        $this->assertNull(Assertion::isModulus(9, 3));
     }
 
     public function testInvalidModulus()
@@ -35,8 +35,8 @@ class AssertionTest extends TestCase
 
     public function testValidNotModulus()
     {
-        Assertion::notModulus(5, 3);
-        Assertion::notModulus(45, 17);
+        $this->assertNull(Assertion::notModulus(5, 3));
+        $this->assertNull(Assertion::notModulus(45, 17));
     }
 
     public function testInvalidNotModulus()
@@ -49,8 +49,8 @@ class AssertionTest extends TestCase
 
     public function testValidNumericRange()
     {
-        Assertion::numericRange(6, 6, 8);
-        Assertion::numericRange(45, 40, 50);
+        $this->assertNull(Assertion::numericRange(6, 6, 8));
+        $this->assertNull(Assertion::numericRange(45, 40, 50));
     }
 
     public function testInvalidNumericRange()
@@ -63,8 +63,8 @@ class AssertionTest extends TestCase
 
     public function testValidNotNumericRange()
     {
-        Assertion::notNumericRange(5, 6, 8);
-        Assertion::notNumericRange(55, 40, 50);
+        $this->assertNull(Assertion::notNumericRange(5, 6, 8));
+        $this->assertNull(Assertion::notNumericRange(55, 40, 50));
     }
 
     public function testInvalidNotNumericRange()
@@ -77,8 +77,8 @@ class AssertionTest extends TestCase
 
     public function testValidNotContains()
     {
-        Assertion::notContains('foo', ':');
-        Assertion::notContains('bar', ';');
+        $this->assertNull(Assertion::notContains('foo', ':'));
+        $this->assertNull(Assertion::notContains('bar', ';'));
     }
 
     public function testInvalidNotContains()

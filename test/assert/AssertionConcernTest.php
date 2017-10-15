@@ -8,7 +8,7 @@
 
 namespace texdc\totp\test\assert;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use function texdc\totp\assert\guard;
 
 class AssertionConcernTest extends TestCase
@@ -20,7 +20,7 @@ class AssertionConcernTest extends TestCase
 
     public function testUsesProperAssertionClass()
     {
-        guard(16)->isModulus(8)->numericRange(8, 32);
+        $this->assertNotNull(guard(16)->isModulus(8)->numericRange(8, 32));
     }
 
     public function testUniqueInstances()
@@ -37,11 +37,11 @@ class AssertionConcernTest extends TestCase
 
     public function testAllUpdatesMethod()
     {
-        guard([7,9])->all()->integer();
+        $this->assertNotNull(guard([7,9])->all()->integer());
     }
 
     public function testNullOrIsValid()
     {
-        guard(null)->nullOr()->alnum();
+        $this->assertNotNull(guard(null)->nullOr()->alnum());
     }
 }
