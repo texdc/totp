@@ -9,11 +9,11 @@
         "beberlei/assert": "^2.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable",
-        "satooshi/php-coveralls": "^1.0",
-        "squizlabs/php_codesniffer": "^3.0",
-        "phpmd/phpmd": "^2.0",
-        "phpmetrics/phpmetrics": "*"
+        "phpunit/phpunit":           "^5.0",
+        "satooshi/php-coveralls":    "@stable",
+        "squizlabs/php_codesniffer": "@stable",
+        "phpmd/phpmd":               "@stable",
+        "phpmetrics/phpmetrics":     "@stable"
     },
     "autoload": {
         "psr-4": { "texdc\\totp\\": "src/" },
@@ -21,5 +21,15 @@
     },
     "autoload-dev": {
         "psr-4": { "texdc\\totp\\test\\": "test/" }
+    },
+    "config": {
+        "platform": { "php": "5.6" },
+        "preferred-install": "dist"
+    },
+    "scripts": {
+        "test":    "vendor/bin/phpunit",
+        "style":   "vendor/bin/phpcs --standard=PSR2 src/ test/",
+        "check":   "vendor/bin/phpmd src/,test/ text cleancode,codesize,design,naming,unusedcode",
+        "metrics": "vendor/bin/phpmetrics --report-cli src/"
     }
 }
