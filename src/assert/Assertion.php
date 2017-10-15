@@ -34,7 +34,7 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function isModulus($value, $modulo, $message = null, $propertyPath = null)
+    public static function isModulus(float $value, float $modulo, string $message = null, string $propertyPath = null)
     {
         static::numeric($value);
         static::numeric($modulo);
@@ -60,7 +60,7 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function notModulus($value, $modulo, $message = null, $propertyPath = null)
+    public static function notModulus(float $value, float $modulo, string $message = null, string $propertyPath = null)
     {
         static::numeric($value);
         static::numeric($modulo);
@@ -87,7 +87,7 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function numericRange($value, $min, $max, $message = null, $propertyPath = null)
+    public static function numericRange(float $value, float $min, float $max, string $message = null, string $propertyPath = null)
     {
         static::numeric($value);
         static::numeric($min);
@@ -116,7 +116,7 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function notNumericRange($value, $min, $max, $message = null, $propertyPath = null)
+    public static function notNumericRange(float $value, float $min, float $max, string $message = null, string $propertyPath = null)
     {
         static::numeric($value);
         static::numeric($min);
@@ -144,7 +144,7 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function notContains($value, $needle, $message = null, $propertyPath = null)
+    public static function notContains(string $value, string $needle, string $message = null, string $propertyPath = null)
     {
         static::string($value);
         static::string($needle);

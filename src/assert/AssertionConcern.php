@@ -13,7 +13,7 @@ use ReflectionClass;
 
 class AssertionConcern extends AssertionChain
 {
-    private static $assertionClass = 'texdc\\totp\\assert\\Assertion';
+    private static $assertionClass = Assertion::class;
 
     private $value;
     private $defaultMessage;
@@ -45,7 +45,7 @@ class AssertionConcern extends AssertionChain
      * @param string|null $defaultMessage
      * @param string|null $defaultPropertyPath
      */
-    public function __construct($value, $defaultMessage = null, $defaultPropertyPath = null)
+    public function __construct($value, string $defaultMessage = null, string $defaultPropertyPath = null)
     {
         $this->value = $value;
         $this->defaultMessage = $defaultMessage;
@@ -87,7 +87,7 @@ class AssertionConcern extends AssertionChain
      *
      * @return AssertionConcern
      */
-    public function all()
+    public function all() : self
     {
         $this->all = true;
 
@@ -97,9 +97,9 @@ class AssertionConcern extends AssertionChain
     /**
      * Switch chain into mode allowing nulls, ignoring further assertions.
      *
-     * @return \Assert\AssertionChain
+     * @return AssertionConcern
      */
-    public function nullOr()
+    public function nullOr() : self
     {
         if ($this->value === null) {
             $this->alwaysValid = true;
@@ -113,7 +113,7 @@ class AssertionConcern extends AssertionChain
      * @param  array  $args
      * @return array
      */
-    private function prepareArgs($methodName, array $args)
+    private function prepareArgs(string $methodName, array $args) : array
     {
         $params = $this->getMethodParameters($methodName);
         array_unshift($args, $this->value);
@@ -139,7 +139,7 @@ class AssertionConcern extends AssertionChain
      * @param  string $methodName
      * @return array
      */
-    private function getMethodParameters($methodName)
+    private function getMethodParameters(string $methodName) : array
     {
         $method = $this->reflClass->getMethod($methodName);
         return $method->getParameters();
