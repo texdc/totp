@@ -87,8 +87,13 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function numericRange(float $value, float $min, float $max, string $message = null, string $propertyPath = null)
-    {
+    public static function numericRange(
+        float $value,
+        float $min,
+        float $max,
+        string $message = null,
+        string $propertyPath = null
+    ) {
         static::numeric($value);
         static::numeric($min);
         static::numeric($max);
@@ -116,8 +121,13 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function notNumericRange(float $value, float $min, float $max, string $message = null, string $propertyPath = null)
-    {
+    public static function notNumericRange(
+        float $value,
+        float $min,
+        float $max,
+        string $message = null,
+        string $propertyPath = null
+    ) {
         static::numeric($value);
         static::numeric($min);
         static::numeric($max);
@@ -144,8 +154,12 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function notContains(string $value, string $needle, string $message = null, string $propertyPath = null)
-    {
+    public static function notContains(
+        string $value,
+        string $needle,
+        string $message = null,
+        string $propertyPath = null
+    ) {
         static::string($value);
         static::string($needle);
 

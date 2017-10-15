@@ -81,8 +81,13 @@ class TOTP
      * @param  string $issuer
      * @return string
      */
-    public function genURI(string $account, string $secret, int $digits = null, int $period = null, string $issuer = '') : string
-    {
+    public function genURI(
+        string $account,
+        string $secret,
+        int $digits = null,
+        int $period = null,
+        string $issuer = ''
+    ) : string {
         guard($account)->notBlank('account is required')
             ->notContains(':', 'account must not contain a colon character');
         guard($secret)->notBlank('secret is required');
