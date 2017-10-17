@@ -10,7 +10,7 @@
 
 namespace texdc\totp;
 
-use function texdc\totp\assert\guard;
+use function texdc\guard\verify;
 
 /**
  * a simple TOTP (RFC 6238) class using the SHA1 default
@@ -35,12 +35,12 @@ class TOTP
      */
     public function getOTP(string $secret, int $digits = 6, int $period = 30, int $offset = 0) : string
     {
-        guard($secret)->minLength(16, 'length of secret must be at least 16 characters')
+        verify($secret)->minLength(16, 'length of secret must be at least 16 characters')
             ->regex('/^[a-z2-7]+$/i', 'secret contains non-base32 characters');
-        guard(strlen($secret))->isModulus(8, 'length of secret must be a multiple of 8');
-        guard($digits)->numericRange(6, 8, 'digits must be 6, 7, or 8');
-        guard($period)->integer();
-        guard($offset)->nullOr()->integer();
+        verify(strlen($secret))->isModulus(8, 'length of secret must be a multiple of 8');
+        verify($digits)->numericRange(6, 8, 'digits must be 6, 7, or 8');
+        verify($period)->integer();
+        verify($offset)->nullOr()->integer();
 
         $seed  = $this->base32Decode($secret);
         $time  = $this->getTimestamp($period, $offset);
@@ -59,7 +59,7 @@ class TOTP
      */
     public function genSecret(int $length = 24) : string
     {
-        guard($length)->min(16, 'length must be at least 16 characters')
+        verify($length)->min(16, 'length must be at least 16 characters')
             ->isModulus(8, 'length must be a multiple of 8');
 
         while ($length--) {
@@ -88,12 +88,12 @@ class TOTP
         int $period = null,
         string $issuer = ''
     ) : string {
-        guard($account)->notBlank('account is required')
+        verify($account)->notBlank('account is required')
             ->notContains(':', 'account must not contain a colon character');
-        guard($secret)->notBlank('secret is required');
-        guard($digits)->nullOr()->digit();
-        guard($period)->nullOr()->digit();
-        guard($issuer)->notContains(':', 'issuer must not contain a colon character');
+        verify($secret)->notBlank('secret is required');
+        verify($digits)->nullOr()->digit();
+        verify($period)->nullOr()->digit();
+        verify($issuer)->notContains(':', 'issuer must not contain a colon character');
 
         $account = rawurlencode($account);
         $issuer  = rawurlencode($issuer);

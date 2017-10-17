@@ -6,7 +6,7 @@
     "keywords": ["totp", "2fa", "2factor", "mfa", "authenticate"],
     "require": {
         "php": "^7.1",
-        "beberlei/assert": "^2.5"
+        "texdc/guard": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit":           "@stable",
@@ -19,8 +19,7 @@
         "chillerlan/php-qrcode": "For generating QR code images"
     },
     "autoload": {
-        "psr-4": { "texdc\\totp\\": "src/" },
-        "files": [ "src/assert/functions.php" ]
+        "psr-4": { "texdc\\totp\\": "src/" }
     },
     "autoload-dev": {
         "psr-4": { "texdc\\totp\\test\\": "test/" }
