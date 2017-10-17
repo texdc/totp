@@ -3,17 +3,20 @@
     "description": "Simple TOTP (RFC 6238)",
     "type": "library",
     "license": "CC BY-NC-SA 4.0",
-    "keywords": ["totp", "2fa", "mfa", "authenticate"],
+    "keywords": ["totp", "2fa", "2factor", "mfa", "authenticate"],
     "require": {
-        "php": "^7.0",
+        "php": "^7.1",
         "beberlei/assert": "^2.5"
     },
     "require-dev": {
-        "phpunit/phpunit":           "^6.0",
+        "phpunit/phpunit":           "@stable",
         "satooshi/php-coveralls":    "@stable",
         "squizlabs/php_codesniffer": "@stable",
         "phpmd/phpmd":               "@stable",
         "phpmetrics/phpmetrics":     "@stable"
+    },
+    "suggest": {
+        "chillerlan/php-qrcode": "For generating QR code images"
     },
     "autoload": {
         "psr-4": { "texdc\\totp\\": "src/" },
@@ -23,7 +26,7 @@
         "psr-4": { "texdc\\totp\\test\\": "test/" }
     },
     "config": {
-        "platform": { "php": "7.0" },
+        "platform": { "php": "7.1" },
         "preferred-install": "dist"
     },
     "scripts": {
