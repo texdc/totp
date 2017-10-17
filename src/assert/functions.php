@@ -26,7 +26,7 @@ namespace texdc\totp\assert;
  *
  * @return AssertionConcern
  */
-function guard($value, $defaultMessage = null, $defaultPropertyPath = null)
+function guard($value, ?string $defaultMessage = null, ?string $defaultPropertyPath = null) : AssertionConcern
 {
     return new AssertionConcern($value, $defaultMessage, $defaultPropertyPath);
 }

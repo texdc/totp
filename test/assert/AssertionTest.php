@@ -28,7 +28,6 @@ class AssertionTest extends TestCase
     public function testInvalidModulus()
     {
         $this->expectException('Assert\AssertionFailedException');
-        $this->expectExceptionCode(Assertion::INVALID_MODULUS);
         $this->expectExceptionMessage('Value 15 is not a modulus of 4');
         Assertion::isModulus(15, 4);
     }
@@ -42,7 +41,6 @@ class AssertionTest extends TestCase
     public function testInvalidNotModulus()
     {
         $this->expectException('Assert\AssertionFailedException');
-        $this->expectExceptionCode(Assertion::INVALID_MODULUS);
         $this->expectExceptionMessage('Value 12 is a modulus of 4');
         Assertion::notModulus(12, 4);
     }
@@ -56,7 +54,6 @@ class AssertionTest extends TestCase
     public function testInvalidNumericRange()
     {
         $this->expectException('Assert\AssertionFailedException');
-        $this->expectExceptionCode(Assertion::INVALID_NUMERIC_RANGE);
         $this->expectExceptionMessage('Value 12 is not between 15 and 20');
         Assertion::numericRange(12, 15, 20);
     }
@@ -70,7 +67,6 @@ class AssertionTest extends TestCase
     public function testInvalidNotNumericRange()
     {
         $this->expectException('Assert\AssertionFailedException');
-        $this->expectExceptionCode(Assertion::INVALID_NUMERIC_RANGE);
         $this->expectExceptionMessage('Value 18 is between 15 and 20');
         Assertion::notNumericRange(18, 15, 20);
     }
@@ -84,7 +80,6 @@ class AssertionTest extends TestCase
     public function testInvalidNotContains()
     {
         $this->expectException('Assert\AssertionFailedException');
-        $this->expectExceptionCode(Assertion::INVALID_STRING_CONTAINS);
         $this->expectExceptionMessage('Value ":test" contains ":"');
         Assertion::notContains(':test', ':');
     }

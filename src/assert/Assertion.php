@@ -21,8 +21,8 @@ use Assert\Assertion as BaseAssertion;
  */
 class Assertion extends BaseAssertion
 {
-    const INVALID_MODULUS       = 400;
-    const INVALID_NUMERIC_RANGE = 401;
+    private const INVALID_MODULUS       = 400;
+    private const INVALID_NUMERIC_RANGE = 401;
 
     /**
      * Assert that a value is a modulus of $modulo
@@ -34,8 +34,12 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function isModulus(float $value, float $modulo, string $message = null, string $propertyPath = null)
-    {
+    public static function isModulus(
+        float $value,
+        float $modulo,
+        ?string $message = null,
+        ?string $propertyPath = null
+    ) : void {
         static::numeric($value);
         static::numeric($modulo);
 
@@ -60,8 +64,12 @@ class Assertion extends BaseAssertion
      * @return void
      * @throws \Assert\AssertionFailedException
      */
-    public static function notModulus(float $value, float $modulo, string $message = null, string $propertyPath = null)
-    {
+    public static function notModulus(
+        float $value,
+        float $modulo,
+        ?string $message = null,
+        ?string $propertyPath = null
+    ) : void {
         static::numeric($value);
         static::numeric($modulo);
 
@@ -91,9 +99,9 @@ class Assertion extends BaseAssertion
         float $value,
         float $min,
         float $max,
-        string $message = null,
-        string $propertyPath = null
-    ) {
+        ?string $message = null,
+        ?string $propertyPath = null
+    ) : void {
         static::numeric($value);
         static::numeric($min);
         static::numeric($max);
@@ -125,9 +133,9 @@ class Assertion extends BaseAssertion
         float $value,
         float $min,
         float $max,
-        string $message = null,
-        string $propertyPath = null
-    ) {
+        ?string $message = null,
+        ?string $propertyPath = null
+    ) : void {
         static::numeric($value);
         static::numeric($min);
         static::numeric($max);
@@ -157,9 +165,9 @@ class Assertion extends BaseAssertion
     public static function notContains(
         string $value,
         string $needle,
-        string $message = null,
-        string $propertyPath = null
-    ) {
+        ?string $message = null,
+        ?string $propertyPath = null
+    ) : void {
         static::string($value);
         static::string($needle);
 

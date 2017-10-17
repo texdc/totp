@@ -45,7 +45,7 @@ class AssertionConcern extends AssertionChain
      * @param string|null $defaultMessage
      * @param string|null $defaultPropertyPath
      */
-    public function __construct($value, string $defaultMessage = null, string $defaultPropertyPath = null)
+    public function __construct($value, ?string $defaultMessage = null, ?string $defaultPropertyPath = null)
     {
         $this->value = $value;
         $this->defaultMessage = $defaultMessage;
