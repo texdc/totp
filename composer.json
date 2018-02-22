@@ -2,7 +2,7 @@
     "name": "texdc/totp",
     "description": "Simple TOTP (RFC 6238)",
     "type": "library",
-    "license": "CC BY-NC-SA 4.0",
+    "license": "CC-BY-NC-SA-4.0",
     "keywords": ["totp", "2fa", "2factor", "mfa", "authenticate"],
     "require": {
         "php": "^7.1",
